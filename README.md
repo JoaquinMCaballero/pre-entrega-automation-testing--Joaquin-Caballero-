@@ -8,6 +8,7 @@ Proyecto de automatizacion de pruebas realizado con python para el curso de Tale
 - Pytest
 - Git
 - Github
+- Firefox
 
 ## Instalacion
 
