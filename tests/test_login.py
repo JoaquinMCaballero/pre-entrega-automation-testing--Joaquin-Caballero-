@@ -1,7 +1,12 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils.login import login
+
+"""
+    Prueba el flujo de inicio de sesión exitoso con credenciales válidas.
+    Verifica la redirección y la carga correcta de la página principal del inventario. 
+"""
+
 
 def test_login_exitoso():
     # Inicializa el driver para el navegador Firefox

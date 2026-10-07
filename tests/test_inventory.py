@@ -1,7 +1,12 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from utils.login import login
+
+"""
+    Prueba de integración para la página de inventario.
+    Verifica el título de la página, la existencia de productos en el catálogo,
+    existencia de productos visibles y la presencia de controles clave.
+"""
 
 def test_inventory():
     # Inicializa el driver para el navegador Firefox
