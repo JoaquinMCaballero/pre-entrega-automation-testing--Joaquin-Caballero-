@@ -30,6 +30,6 @@ Instalar las dependencias:
     ```
 
 ## Casos de prueba
--El inicio de sesión exitoso de los usuarios.
--La correcta carga y visualización del catálogo de productos (inventario).
--La funcionalidad principal del carrito de compras (selección y agregación de productos).
+- El inicio de sesión exitoso de los usuarios.
+- La correcta carga y visualización del catálogo de productos (inventario).
+- La funcionalidad principal del carrito de compras (selección y agregación de productos).
