@@ -1,41 +1,34 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils.login import login
+from selenium.webdriver.support import expected_conditions as EC
+from pages.inventory_page import InventoryPage
+from pages.login_page import LoginPage
 
-"""
-    Prueba de integración para la página de inventario.
-    Verifica el título de la página, la existencia de productos en el catálogo,
-    existencia de productos visibles y la presencia de controles clave.
-"""
+def test_inventory(driver):
+ 
+    # Abre la página de login y ejecuta el flujo completo
+    LoginPage(driver).abrir().login_completo("standard_user", "secret_sauce")
 
-def test_inventory():
-    # Inicializa el driver para el navegador Firefox
-    driver = webdriver.Firefox()
+    inventory_page = InventoryPage(driver)
        
     try:
-        #Inicio el login
-        login(driver,"user-name", "password")
 
         # Validación del título de la pestaña del navegador
         assert driver.title == "Swag Labs"
 
         # Búsqueda y verificación de que existan elementos en el catálogo
-        productos = driver.find_elements(By.CLASS_NAME, "inventory_item")
+        productos = inventory_page.obtener_productos()
         assert len(productos) > 0
 
         # Extracción y comprobación de datos (nombre y precio) del primer producto
-        nombre_producto = productos[0].find_element(By.CLASS_NAME, "inventory_item_name").text
-        precio_producto = productos[0].find_element(By.CLASS_NAME, "inventory_item_price").text
-        assert nombre_producto == "Sauce Labs Backpack"
-        assert precio_producto == "$29.99"
+        assert inventory_page.obtener_nombre_primer_producto() == "Sauce Labs Backpack"
+        assert inventory_page.obtener_precio_primer_producto() == "$29.99"
 
         # Verificación de visibilidad del menú de navegación lateral
-        menu = driver.find_element(By.ID, "react-burger-menu-btn")
-        assert menu.is_displayed()
+
+        assert inventory_page.menu_visible()
 
         # Verificación de visibilidad del selector de ordenamiento de productos
-        filtro = driver.find_element(By.CLASS_NAME, "product_sort_container")
-        assert filtro.is_displayed()
+        assert inventory_page.filtro_visible()
 
     finally:
         # Cierra la instancia de Firefox y libera los recursos

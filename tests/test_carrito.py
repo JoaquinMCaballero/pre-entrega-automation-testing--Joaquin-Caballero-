@@ -1,6 +1,9 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils.login import login
+from selenium.webdriver.support import expected_conditions as EC
+
+from pages.login_page import LoginPage
+from pages.cart_page import CartPage
+from pages.inventory_page import InventoryPage
 
 """
     Prueba el flujo de agregar un producto al carrito de compras.
@@ -9,15 +12,14 @@ from utils.login import login
  """
 
 
-def test_carrito():
-    # Inicializa el driver para el navegador Firefox
-    driver = webdriver.Firefox()
+def test_carrito(driver):
+
+    # Abre la página de login y ejecuta el flujo completo
+    LoginPage(driver).abrir().login_completo("standard_user", "secret_sauce")
+    inventory_page = InventoryPage(driver)
+    cart_page = CartPage(driver)
 
     try:
-        #Inicio el login
-        login(driver,"user-name", "password")
-
-     
         producto = driver.find_element(By.CSS_SELECTOR, ".inventory_item")
         nombre_producto = producto.find_element(By.CSS_SELECTOR, ".inventory_item_name").text
         producto.find_element(By.TAG_NAME, "button").click()   

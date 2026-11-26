@@ -1,6 +1,7 @@
 # pages/inventory_page.py
 
-from selenium.webdriver.common.by import By from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By 
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class InventoryPage:
@@ -11,6 +12,9 @@ class InventoryPage:
     _CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
     _MENU_BUTTON = (By.ID, "react-burger-menu-btn")
     _LOGOUT_LINK = (By.ID, "logout_sidebar_link")
+    _PRODUCT_NAME = (By.CLASS_NAME, "inventory_item_name")
+    _PRODUCT_PRICE = (By.CLASS_NAME, "inventory_item_price")
+    _FILTRO = (By.CLASS_NAME, "product_sort_container")
 
     def __init__(self, driver):
         self.driver = driver
@@ -23,6 +27,20 @@ class InventoryPage:
     def obtener_productos(self):
         """Obtiene la lista de productos disponibles."""
         return self.driver.find_elements(*self._PRODUCTS)
+
+    def obtener_nombre_primer_producto(self):
+        return self.obtener_productos()[0].find_element(*self._PRODUCT_NAME).text
+
+    def obtener_precio_primer_producto(self):
+        return self.obtener_productos()[0].find_element(*self._PRODUCT_PRICE).text  
+
+    def menu_visible(self):
+        return self.driver.find_element(*self._MENU_BUTTON).is_displayed()
+
+    def filtro_visible(self):
+        return self.driver.find_element(*self._FILTRO).is_displayed()
+
+    
     
     def agregar_primer_producto(self):
         """Añade el primer producto disponible al carrito."""

@@ -10,7 +10,7 @@ class LoginPage:
     _USER_INPUT = (By.ID, "user-name")
     _PASS_INPUT = (By.ID, "password")
     _LOGIN_BUTTON = (By.ID, "login-button")
-    _ERROR_MESSAGE = (By.CSS_SELECTOR, "[data-test='error']")
+    _ERROR_MESSAGE = (By.CSS_SELECTOR, ".error > h3")
 
     def __init__(self, driver):
         self.driver = driver
