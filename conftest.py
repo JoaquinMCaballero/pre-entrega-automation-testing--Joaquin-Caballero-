@@ -17,7 +17,6 @@ def driver():
     firefox_options.add_argument("--disable-dev-shm-usage")
     service = Service()
     driver = webdriver.Firefox(service=service, options=firefox_options)
-    driver.maximize_window()
     driver.implicitly_wait(5)
     yield driver
     time.sleep(1) # Para ver el resultado final

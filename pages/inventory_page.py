@@ -8,8 +8,6 @@ class InventoryPage:
     _TITLE = (By.CLASS_NAME, "title")
     _PRODUCTS = (By.CLASS_NAME, "inventory_item")
     _ADD_BUTTONS = (By.CSS_SELECTOR, "button[data-test*='add-to-cart']")
-    _CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
-    _CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
     _MENU_BUTTON = (By.ID, "react-burger-menu-btn")
     _LOGOUT_LINK = (By.ID, "logout_sidebar_link")
     _PRODUCT_NAME = (By.CLASS_NAME, "inventory_item_name")
@@ -41,28 +39,21 @@ class InventoryPage:
         return self.driver.find_element(*self._FILTRO).is_displayed()
 
     
-    
-    def agregar_primer_producto(self):
-        """Añade el primer producto disponible al carrito."""
-        primer_boton = self.driver.find_elements(*self._ADD_BUTTONS)[0]
-        primer_boton.click()
-        return self
+    def agregar_producto(self,nombre):
+        productos = self.obtener_productos()
+        for producto in productos:
+            nombre_producto = producto.find_element(*self._PRODUCT_NAME).text
+            if nombre_producto == nombre:
+                producto.find_element(By.TAG_NAME,"button").click()
+                return
+        raise AssertionError(f"No se encontró el producto: {nombre}")
     
     def obtener_contador_carrito(self):
-        """Obtiene el número de productos en el carrito."""
-        try:
-            badge = self.driver.find_element(*self._CART_BADGE)
-            return int(badge.text)
-        except:
-            return 0
+        return self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME,"shopping_cart_badge"))).text
 
     def ir_al_carrito(self):
-        """Navega a la página del carrito."""
-        self.driver.find_element(*self._CART_LINK).click()
-        # Importación lazy para evitar dependencias circulares
-        from pages.cart_page import CartPage
-        return CartPage(self.driver)
-
+        self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME,"shopping_cart_link"))).click()
+        
     def hacer_logout(self):
         """Cierra la sesión del usuario."""
         self.driver.find_element(*self._MENU_BUTTON).click()

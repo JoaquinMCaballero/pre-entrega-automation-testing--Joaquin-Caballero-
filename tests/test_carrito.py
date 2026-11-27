@@ -5,6 +5,8 @@ from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.inventory_page import InventoryPage
 
+from utils.reader import read_productos_json
+
 """
     Prueba el flujo de agregar un producto al carrito de compras.
     Verifica que el contador del carrito se incremente correctamente y que el producto 
@@ -19,19 +21,17 @@ def test_carrito(driver):
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    try:
-        producto = driver.find_element(By.CSS_SELECTOR, ".inventory_item")
-        nombre_producto = producto.find_element(By.CSS_SELECTOR, ".inventory_item_name").text
-        producto.find_element(By.TAG_NAME, "button").click()   
+    producto = read_productos_json()[0]
 
-        
-        cont_carrito = driver.find_element(By.CSS_SELECTOR, ".shopping_cart_badge").text
-        assert cont_carrito == "1"
+    inventory_page.agregar_producto(producto["nombre"])
 
-        
-        driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
-        nombre_carrito = driver.find_element(By.CSS_SELECTOR, ".cart_item .inventory_item_name").text
-        assert nombre_carrito == nombre_producto 
+    assert inventory_page.obtener_contador_carrito() == "1"
 
-    finally:
-        driver.quit()
+    inventory_page.ir_al_carrito()
+
+    assert cart_page.obtener_nombre_producto() == producto["nombre"]
+
+    assert cart_page.obtener_precio_producto() == producto["precio"]
+
+
+    driver.quit()
