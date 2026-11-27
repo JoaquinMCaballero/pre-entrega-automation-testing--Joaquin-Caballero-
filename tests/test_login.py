@@ -26,7 +26,6 @@ def test_login(driver,data):
         titulo = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[data-test='title']")))
         assert titulo.text == "Products"
     elif data["tipo_usuario"] == "False": 
-        print("Falso")
         assert "Epic Sadface" in login_page.obtener_mensaje_error()
   
     
